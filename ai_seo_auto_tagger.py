@@ -10,6 +10,9 @@ from datetime import datetime
 from typing import Dict, List, Optional
 import os
 
+# ✅ ADDED: Flask imports
+from flask import Flask, render_template, request, jsonify
+
 try:
     import google.generativeai as genai
     GEMINI_AVAILABLE = True
@@ -17,6 +20,8 @@ except ImportError:
     GEMINI_AVAILABLE = False
     print("Warning: google-generativeai not installed. Install with: pip install google-generativeai")
 
+# ✅ ADDED: Flask app instance (Gunicorn needs this)
+app = Flask(__name__)
 
 class AISeOAutoTagger:
     """
@@ -352,60 +357,42 @@ Return the JSON now:"""
         return output_path
 
 
-# Example usage
+
+# ----------------------------
+# ✅ ADDED: FLASK ROUTES
+# ----------------------------
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+@app.route("/generate", methods=["POST"])
+def generate():
+    data = request.get_json()
+    blog_text = data.get("blog_text")
+
+    if not blog_text:
+        return jsonify({"error": "No blog text provided"}), 400
+
+    try:
+        tagger = AISeOAutoTagger()  # create inside request
+        metadata = tagger.ai_analyze_content(blog_text)
+
+        if not metadata:
+            return jsonify({"error": "AI failed"}), 500
+
+        return jsonify(metadata)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
+# ----------------------------
+# ✅ MODIFIED: Run Flask if local
+# ----------------------------
+
 if __name__ == "__main__":
-    print("=" * 60)
-    print("🚀 AI-Powered SEO Auto-Tagger (FREE Google Gemini API)")
-    print("=" * 60)
-    print()
-    
-    # Get API key from user if not in environment
-    api_key = os.getenv('GEMINI_API_KEY')
-    
-    if not api_key:
-        print("📝 Get your FREE Gemini API key:")
-        print("   1. Go to: https://makersuite.google.com/app/apikey")
-        print("   2. Click 'Create API Key'")
-        print("   3. Copy the key")
-        print()
-        api_key = input("Paste your API key here (or press Enter to use rule-based): ").strip()
-        
-        if api_key:
-            os.environ['GEMINI_API_KEY'] = api_key
-    
-    # Create tagger
-    tagger = AISeOAutoTagger(api_key=api_key)
-    
-    # Sample blog
-    sample_blog = """# The Future of Artificial Intelligence in Healthcare
-
-Artificial intelligence is revolutionizing healthcare delivery across the globe. From diagnostic imaging to personalized treatment plans, AI technologies are enabling medical professionals to provide better patient care.
-
-## Current Applications
-
-Machine learning algorithms can now detect diseases like cancer with accuracy rates exceeding 90%. Deep learning models analyze medical images faster than human radiologists, identifying subtle patterns that might be missed by the human eye.
-
-## Challenges and Opportunities
-
-While AI presents enormous opportunities, there are challenges including data privacy, algorithmic bias, and the need for regulatory frameworks. How do we ensure AI systems are transparent and accountable?
-
-The integration of AI in healthcare requires collaboration between technologists, medical professionals, and policymakers to create systems that truly benefit patients while maintaining ethical standards.
-
-## Looking Ahead
-
-As AI technology continues to evolve, we can expect even more innovative applications in predictive medicine, drug discovery, and personalized healthcare. The future of medicine is intelligent, data-driven, and patient-centric."""
-    
-    # Process
-    output_file = "/home/claude/ai_generated_example.md"
-    tagger.process_and_save(
-        blog_text=sample_blog,
-        output_path=output_file,
-        author="Dr. Jane Smith",
-        category="Healthcare Technology"
-    )
-    
-    print()
-    print("=" * 60)
-    print("✨ Done! Check the output file to see AI-generated metadata")
-    print("=" * 60)
-    
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
