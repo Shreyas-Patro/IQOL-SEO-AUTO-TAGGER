@@ -1,9 +1,3 @@
-# AI Auto-Tagger Requirements
-google-genai
-python-dotenv
 flask
-<<<<<<< HEAD
 gunicorn
-=======
-gunicorn
->>>>>>> 85a5fd4 (Serve HTML template and restructure project)
+google-generativeai
