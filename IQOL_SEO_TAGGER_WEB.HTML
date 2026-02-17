@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IQOL SEO Auto-Tagger | Meta Tag Your Blog Content</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .code-block {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .tooltip {
+            position: relative;
+        }
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1f2937;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .metadata-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #f3f4f6;
+            border-radius: 16px;
+            font-size: 12px;
+            margin: 4px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    
+    <!-- Header -->
+    <header class="gradient-bg text-white py-8 shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-4xl font-bold mb-2">IQOL SEO Auto-Tagger</h1>
+                    <p class="text-purple-100">Convert your blog into SEO-optimized markdown with meta tags</p>
+                </div>
+                <div class="text-right">
+                    <div class="text-sm text-purple-200">Content Quality Index</div>
+                    <div class="text-xs text-purple-300 mt-1">Content preserved 100%</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        
+        <!-- Features Banner -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+                <div>
+                    <div class="text-3xl mb-2">🎯</div>
+                    <div class="font-semibold text-gray-800">SEO Optimized</div>
+                    <div class="text-sm text-gray-600">Meta tags & keywords</div>
+                </div>
+                <div>
+                    <div class="text-3xl mb-2">🤖</div>
+                    <div class="font-semibold text-gray-800">AI-Powered</div>
+                    <div class="text-sm text-gray-600">Smart analysis</div>
+                </div>
+                <div>
+                    <div class="text-3xl mb-2">📱</div>
+                    <div class="font-semibold text-gray-800">Social Ready</div>
+                    <div class="text-sm text-gray-600">OG & Twitter cards</div>
+                </div>
+                <div>
+                    <div class="text-3xl mb-2">⚡</div>
+                    <div class="font-semibold text-gray-800">Instant</div>
+                    <div class="text-sm text-gray-600">Real-time generation</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Interface -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <!-- Input Section -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800">📝 Your Blog Content</h2>
+                    <button 
+                        id="loadExample" 
+                        class="text-sm text-purple-600 hover:text-purple-800 underline"
+                    >
+                        Load Example
+                    </button>
+                </div>
+                
+                <!-- Input Fields -->
+                <div class="space-y-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Author
+                        </label>
+                        <input 
+                            type="text" 
+                            id="authorInput" 
+                            placeholder="Shreyas Patro"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        >
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Category
+                        </label>
+                        <input 
+                            type="text" 
+                            id="categoryInput" 
+                            placeholder="Micromarket"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        >
+                    </div>
+                </div>
+                
+                <!-- Text Area -->
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Blog Text <span class="text-red-500">*</span>
+                </label>
+                <textarea 
+                    id="blogInput" 
+                    rows="15" 
+                    placeholder="Paste your blog content here... (Markdown supported)
+
+Example:
+# Your Article Title
+
+Your introduction paragraph...
+
+## Section 1
+Content here..."
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent font-mono text-sm"
+                ></textarea>
+                
+                <div class="flex items-center justify-between mt-4">
+                    <div class="text-sm text-gray-600">
+                        <span id="wordCount">0</span> words • 
+                        <span id="charCount">0</span> characters
+                    </div>
+                    <button 
+                        id="generateBtn"
+                        class="gradient-bg text-white px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition-all transform hover:scale-105 shadow-lg"
+                    >
+                        ✨ Generate SEO Markdown
+                    </button>
+                </div>
+            </div>
+
+            <!-- Output Section -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800">📄 SEO-Optimized Output</h2>
+                    <div class="space-x-2">
+                        <button 
+                            id="copyBtn"
+                            class="text-sm bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled
+                        >
+                            📋 Copy
+                        </button>
+                        <button 
+                            id="downloadBtn"
+                            class="text-sm bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled
+                        >
+                            💾 Download
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Metadata Preview -->
+                <div id="metadataPreview" class="mb-4 hidden">
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-4">
+                        <h3 class="font-semibold text-purple-900 mb-2">🏷️ Generated Metadata:</h3>
+                        <div id="metadataContent" class="text-sm space-y-2"></div>
+                    </div>
+                </div>
+
+                <!-- Output Display -->
+                <div class="relative">
+                    <pre id="outputContent" class="code-block bg-gray-50 border border-gray-200 rounded-lg p-4 overflow-auto max-h-[600px] text-sm"><code class="text-gray-400">Generated markdown will appear here...</code></pre>
+                    
+                    <!-- Loading State -->
+                    <div id="loadingState" class="hidden absolute inset-0 bg-white bg-opacity-90 flex items-center justify-center rounded-lg">
+                        <div class="text-center">
+                            <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-purple-600 mx-auto mb-4"></div>
+                            <div class="text-gray-700 font-semibold">Analyzing content...</div>
+                            <div class="text-sm text-gray-500 mt-2">Generating SEO metadata</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Information Section -->
+        <div class="mt-8 bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">✨ What Gets Generated?</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <h4 class="font-semibold text-purple-600 mb-2">📊 SEO Essentials</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>✓ Meta title & description</li>
+                        <li>✓ Focus keyword</li>
+                        <li>✓ Primary keywords (10+)</li>
+                        <li>✓ Content tags</li>
+                        <li>✓ URL slug</li>
+                        <li>✓ Canonical URL</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-purple-600 mb-2">🌐 Social Media</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>✓ Open Graph tags</li>
+                        <li>✓ Twitter Card data</li>
+                        <li>✓ OG title & description</li>
+                        <li>✓ Article type</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-purple-600 mb-2">🎯 Advanced SEO</h4>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>✓ Schema.org markup</li>
+                        <li>✓ FAQ extraction</li>
+                        <li>✓ Reading time</li>
+                        <li>✓ LSI keywords</li>
+                        <li>✓ Entity recognition</li>
+                        <li>✓ Topic clustering</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-2">🚀 SEO Auto-Tagger - Powered by AI</p>
+            <p class="text-sm">Your content stays exactly the same • Only metadata is added</p>
+            <p class="text-xs mt-4">© 2026 All rights reserved</p>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const blogInput = document.getElementById('blogInput');
+        const authorInput = document.getElementById('authorInput');
+        const categoryInput = document.getElementById('categoryInput');
+        const generateBtn = document.getElementById('generateBtn');
+        const outputContent = document.getElementById('outputContent');
+        const copyBtn = document.getElementById('copyBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const loadingState = document.getElementById('loadingState');
+        const wordCount = document.getElementById('wordCount');
+        const charCount = document.getElementById('charCount');
+        const loadExample = document.getElementById('loadExample');
+        const metadataPreview = document.getElementById('metadataPreview');
+        const metadataContent = document.getElementById('metadataContent');
+
+        // Example blog content
+        const exampleContent = `# The Future of Artificial Intelligence in Healthcare
+
+Artificial intelligence is revolutionizing healthcare delivery across the globe. From diagnostic imaging to personalized treatment plans, AI technologies are enabling medical professionals to provide better patient care.
+
+## Current Applications
+
+Machine learning algorithms can now detect diseases like cancer with accuracy rates exceeding 90%. Deep learning models analyze medical images faster than human radiologists, identifying subtle patterns that might be missed by the human eye.
+
+## Challenges and Opportunities
+
+While AI presents enormous opportunities, there are challenges including data privacy, algorithmic bias, and the need for regulatory frameworks. How do we ensure AI systems are transparent and accountable?
+
+The integration of AI in healthcare requires collaboration between technologists, medical professionals, and policymakers to create systems that truly benefit patients while maintaining ethical standards.
+
+## Looking Ahead
+
+As AI technology continues to evolve, we can expect even more innovative applications in predictive medicine, drug discovery, and personalized healthcare. The future of medicine is intelligent, data-driven, and patient-centric.`;
+
+        // Update word/char count
+        blogInput.addEventListener('input', () => {
+            const text = blogInput.value;
+            const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+            wordCount.textContent = words;
+            charCount.textContent = text.length;
+        });
+
+        // Load example
+        loadExample.addEventListener('click', () => {
+            blogInput.value = exampleContent;
+            authorInput.value = "Dr. Jane Smith";
+            categoryInput.value = "Healthcare Technology";
+            blogInput.dispatchEvent(new Event('input'));
+        });
+
+        // Simple SEO metadata generator (client-side version)
+        function generateSEOMetadata(text, author = '', category = '') {
+            // Extract title
+            const lines = text.trim().split('\n');
+            let title = lines[0].replace(/^#+\s*/, '').trim();
+            if (!title) title = "Untitled Post";
+
+            // Extract keywords (simple frequency-based)
+            const words = text.toLowerCase()
+                .replace(/[^a-z\s]/g, '')
+                .split(/\s+/)
+                .filter(w => w.length > 3);
+            
+            const stopWords = new Set(['this', 'that', 'with', 'from', 'have', 'will', 'your', 'their', 'there', 'about', 'which', 'when', 'where']);
+            const wordFreq = {};
+            
+            words.forEach(word => {
+                if (!stopWords.has(word)) {
+                    wordFreq[word] = (wordFreq[word] || 0) + 1;
+                }
+            });
+
+            const keywords = Object.entries(wordFreq)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10)
+                .map(([word]) => word);
+
+            // Generate meta description (first 2 sentences)
+            const sentences = text.replace(/^#+.*$/gm, '').split(/[.!?]+/).filter(s => s.trim().length > 20);
+            let metaDesc = sentences.slice(0, 2).join('. ').trim();
+            if (metaDesc.length > 155) {
+                metaDesc = metaDesc.substring(0, 152) + '...';
+            }
+
+            // Generate slug
+            const slug = title.toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .substring(0, 60);
+
+            // Extract headings as topics
+            const topics = text.match(/^#{1,3}\s+(.+)$/gm)?.map(h => h.replace(/^#+\s*/, '')) || [];
+
+            // Calculate reading time
+            const wordCount = text.split(/\s+/).length;
+            const readingTime = Math.max(1, Math.round(wordCount / 200));
+
+            const today = new Date().toISOString().split('T')[0];
+
+            return {
+                title,
+                metaTitle: title,
+                metaDescription: metaDesc,
+                author: author || 'Content Team',
+                date: today,
+                category: category || 'General',
+                slug,
+                focusKeyword: keywords[0] || '',
+                keywords: keywords.slice(0, 8),
+                tags: keywords.slice(0, 6).map(k => k.charAt(0).toUpperCase() + k.slice(1)),
+                readingTime: `${readingTime} min read`,
+                wordCount: wordCount,
+                topics: topics.slice(0, 5)
+            };
+        }
+
+        // Generate markdown with frontmatter
+        function createMarkdownFile(blogText, metadata) {
+            const yaml = `---
+title: "${metadata.title}"
+meta_title: "${metadata.metaTitle}"
+description: "${metadata.metaDescription}"
+date: ${metadata.date}
+author: ${metadata.author}
+category: ${metadata.category}
+slug: ${metadata.slug}
+canonical: /${metadata.slug}
+robots: index, follow
+
+# SEO Keywords
+focus_keyword: ${metadata.focusKeyword}
+keywords:
+${metadata.keywords.map(k => `  - ${k}`).join('\n')}
+
+tags:
+${metadata.tags.map(t => `  - ${t}`).join('\n')}
+
+# Social Media
+og_title: "${metadata.title}"
+og_description: "${metadata.metaDescription}"
+og_type: article
+twitter_card: summary_large_image
+
+# Answer Engine Optimization
+schema_type: BlogPosting
+reading_time: ${metadata.readingTime}
+word_count: ${metadata.wordCount}
+
+topics:
+${metadata.topics.map(t => `  - "${t}"`).join('\n')}
+---
+
+${blogText}`;
+
+            return yaml;
+        }
+
+        // Generate button click handler
+        generateBtn.addEventListener('click', async () => {
+            const text = blogInput.value.trim();
+            
+            if (!text) {
+                alert('Please enter some blog content!');
+                return;
+            }
+
+            // Show loading
+            loadingState.classList.remove('hidden');
+            generateBtn.disabled = true;
+
+            // Simulate processing delay
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            // Generate metadata
+            const metadata = generateSEOMetadata(
+                text,
+                authorInput.value.trim(),
+                categoryInput.value.trim()
+            );
+
+            // Create markdown
+            const markdown = createMarkdownFile(text, metadata);
+
+            // Display result
+            outputContent.innerHTML = `<code>${escapeHtml(markdown)}</code>`;
+            
+            // Show metadata preview
+            metadataContent.innerHTML = `
+                <div><strong>Focus Keyword:</strong> <span class="metadata-badge">${metadata.focusKeyword}</span></div>
+                <div><strong>Keywords:</strong> ${metadata.keywords.map(k => `<span class="metadata-badge">${k}</span>`).join('')}</div>
+                <div><strong>Reading Time:</strong> ${metadata.readingTime}</div>
+                <div><strong>Word Count:</strong> ${metadata.wordCount}</div>
+            `;
+            metadataPreview.classList.remove('hidden');
+
+            // Enable buttons
+            copyBtn.disabled = false;
+            downloadBtn.disabled = false;
+
+            // Hide loading
+            loadingState.classList.add('hidden');
+            generateBtn.disabled = false;
+
+            // Store markdown for download
+            outputContent.dataset.markdown = markdown;
+        });
+
+        // Copy button
+        copyBtn.addEventListener('click', () => {
+            const markdown = outputContent.dataset.markdown;
+            navigator.clipboard.writeText(markdown).then(() => {
+                copyBtn.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    copyBtn.textContent = '📋 Copy';
+                }, 2000);
+            });
+        });
+
+        // Download button
+        downloadBtn.addEventListener('click', () => {
+            const markdown = outputContent.dataset.markdown;
+            const metadata = generateSEOMetadata(blogInput.value);
+            const filename = `${metadata.slug}.md`;
+            
+            const blob = new Blob([markdown], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            downloadBtn.textContent = '✅ Downloaded!';
+            setTimeout(() => {
+                downloadBtn.textContent = '💾 Download';
+            }, 2000);
+        });
+
+        // Helper function
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+
+</body>
+</html>

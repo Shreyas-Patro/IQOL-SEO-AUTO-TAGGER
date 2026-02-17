@@ -1,0 +1,3 @@
+# AI Auto-Tagger Requirements
+google-genai
+python-dotenv
