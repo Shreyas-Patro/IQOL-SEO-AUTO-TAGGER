@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-AI-Powered SEO Auto-Tagging Tool using Google Gemini (FREE)
+AI-Powered SEO Auto-Tagging Tool using Google Gemini (FREE teir)
 Takes blog text and generates SEO-optimized .md file with AI-generated metadata
 """
 
@@ -51,19 +51,19 @@ class AISeOAutoTagger:
                 # Configure Gemini
                 try:
                     self.client = genai.Client(api_key=self.api_key, http_options={'api_version': 'v1'})
-                    print("✅ AI-powered mode enabled (using Google Gemini - FREE)")
+                    print(" AI-powered mode enabled (using Google Gemini - FREE)")
                 except Exception as e:
                     with open('error_log.txt', 'w') as f:
                         f.write(str(e))
                     print(f"⚠️  Failed to initialize Gemini client: {e}")
                     self.use_ai = False
         else:
-            print("📝 Using rule-based approach (no AI API needed)")
+            print(" Using rule-based approach (no AI API needed)")
     
     def ai_analyze_content(self, blog_text: str, title: Optional[str] = None) -> Dict:
         """
         Use Google Gemini AI to analyze content and generate SEO metadata.
-        This is FREE - no cost!
+    
         """
         
         prompt = f"""You are an expert SEO specialist. Analyze this blog content and generate comprehensive SEO metadata.
@@ -73,20 +73,19 @@ Blog Content:
 
 Generate a JSON response with the following fields:
 
-1. **focus_keyword**: The single most important keyword (2-4 words)
+1. **focus_keyword**: The single most important keyword (5-10 words)
 2. **keywords**: Array of 10-12 primary keywords and phrases
-3. **semantic_keywords**: Array of 5-8 LSI/related keyword phrases
+3. **semantic_keywords**: Array of 10-15 LSI/related keyword phrases
 4. **meta_description**: Compelling, action-oriented meta description (150-155 characters)
-5. **meta_title**: SEO-optimized title (55-60 characters, include focus keyword)
+5. **meta_title**: SEO-optimized title (55-60 characters, include focus keywords)
 6. **tags**: 8-10 content tags (capitalize first letter)
-7. **category**: Best fitting category (Technology/Business/Health/Lifestyle/Education/etc)
+7. **category**: Best fitting category (Micromarkets/Lifestyle/Education/etc)
 8. **entities**: Named entities - people, places, organizations mentioned
 9. **topics**: Main topics/themes covered (from headings)
-10. **faq_questions**: Array of 3-5 FAQ items with "question" and "answer" (extract from content or generate)
-11. **target_audience**: Who this content is for (e.g., "developers", "marketers", "healthcare professionals")
+10. **faq_questions**: Array of 10-15 FAQ items with "question" and "answer" (extract from content or generate)
+11. **target_audience**: Who this content is for (e.g., "homebuyers", "Investors", "residents")
 12. **content_intent**: One of: informational, commercial, navigational, transactional
-13. **readability_level**: Estimated grade level (e.g., "high school", "college", "professional")
-14. **key_takeaways**: 3-5 bullet points of main insights
+13. **key_takeaways**: 3-5 bullet points of main insights
 
 IMPORTANT: 
 - Return ONLY valid JSON, no markdown formatting, no backticks
@@ -123,7 +122,7 @@ Return the JSON now:"""
                         f.write(f"Response: {response.text}\n")
                     except:
                         f.write("Could not read response text\n")
-            print(f"⚠️  AI analysis failed: {e}")
+            print(f"  AI analysis failed: {e}")
             print("Falling back to rule-based approach...")
             return None
     
